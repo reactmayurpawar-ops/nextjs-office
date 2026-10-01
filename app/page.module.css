@@ -1,0 +1,15 @@
+.main {
+  flex: 1 1 auto;
+}
+
+.shop {
+  padding-top: var(--ts-space-12);
+  padding-bottom: var(--ts-space-12);
+}
+
+@media (max-width: 768px) {
+  .shop {
+    padding-top: var(--ts-space-8);
+    padding-bottom: var(--ts-space-8);
+  }
+}
