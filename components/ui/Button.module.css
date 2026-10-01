@@ -1,0 +1,65 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ts-space-2);
+  border-radius: var(--ts-radius-btn);
+  font-family: inherit;
+  font-weight: 600;
+  line-height: 1.1;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.btn:disabled {
+  background: var(--ts-border-subtle);
+  color: #c4c4c4;
+  border-color: transparent;
+  cursor: not-allowed;
+}
+
+/* Sizes */
+.md {
+  padding: 10px 20px;
+  font-size: 0.9375rem;
+}
+
+.lg {
+  padding: 12px 28px;
+  font-size: 1rem;
+}
+
+/* Variants */
+.primary {
+  background: var(--ts-btn-primary-bg);
+  color: var(--ts-btn-primary-fg);
+}
+
+.primary:hover {
+  background: var(--ts-btn-primary-hover);
+}
+
+.secondary {
+  background: var(--ts-btn-secondary-bg);
+  color: var(--ts-btn-secondary-fg);
+  border-color: var(--ts-btn-secondary-border);
+}
+
+.secondary:hover {
+  background: var(--ts-btn-secondary-hover);
+}
+
+.accent {
+  background: var(--ts-accent);
+  color: #ffffff;
+}
+
+.accent:hover {
+  background: var(--ts-accent-hover);
+}

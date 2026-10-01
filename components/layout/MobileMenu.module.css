@@ -1,0 +1,132 @@
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.open {
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.open .overlay {
+  opacity: 1;
+}
+
+.panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: min(84vw, 340px);
+  display: flex;
+  flex-direction: column;
+  background: var(--ts-surface);
+  box-shadow: 2px 0 16px rgba(0, 0, 0, 0.25);
+  transform: translateX(-100%);
+  transition: transform 0.22s ease;
+  outline: none;
+}
+
+.open .panel {
+  transform: translateX(0);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--ts-space-4);
+  border-bottom: 1px solid var(--ts-border);
+}
+
+.headTitle {
+  font-weight: 700;
+  color: var(--ts-heading);
+}
+
+.closeBtn {
+  display: inline-flex;
+  border: none;
+  background: transparent;
+  color: var(--ts-text);
+  cursor: pointer;
+}
+
+.nav {
+  flex: 1 1 auto;
+  overflow-y: auto;
+}
+
+.list,
+.sublist {
+  list-style: none;
+}
+
+.item {
+  border-bottom: 1px solid var(--ts-border-subtle);
+}
+
+.itemLink,
+.itemToggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 14px var(--ts-space-4);
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--ts-text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.caret {
+  color: var(--ts-text-muted);
+  transition: transform 0.15s ease;
+}
+
+.caretUp {
+  transform: rotate(180deg);
+}
+
+.sublist {
+  padding: 0 0 var(--ts-space-2);
+  background: var(--ts-nav-bg);
+}
+
+.sublink {
+  display: block;
+  padding: 11px var(--ts-space-8);
+  font-size: 0.9375rem;
+  color: var(--ts-text);
+}
+
+.sublink:hover {
+  color: var(--ts-heading);
+}
+
+.auth {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ts-space-3);
+  padding: var(--ts-space-4);
+  border-top: 1px solid var(--ts-border);
+}
+
+.authBtn {
+  width: 100%;
+}

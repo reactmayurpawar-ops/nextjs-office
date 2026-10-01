@@ -1,0 +1,138 @@
+.wrap {
+  position: relative;
+}
+
+/**
+ * Matches the sign-in Button's height so the header does not reflow when the session
+ * resolves and one control swaps for the other.
+ */
+.placeholder {
+  width: 120px;
+  height: 40px;
+}
+
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 220px;
+  padding: 6px 8px;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ts-text);
+  cursor: pointer;
+}
+
+.name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* CSS caret — the icon set has no chevron, and this needs no new asset. */
+.caret {
+  width: 0;
+  height: 0;
+  flex: none;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid currentColor;
+}
+
+.menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 30;
+  min-width: 240px;
+  padding: 4px;
+  background: var(--ts-surface);
+  border: 1px solid var(--ts-border);
+  border-radius: 8px;
+  box-shadow: var(--ts-shadow-card);
+}
+
+.identity {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--ts-border-subtle);
+}
+
+.identityName {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ts-heading);
+}
+
+.identityEmail,
+.identityAccount {
+  font-size: 0.75rem;
+  color: var(--ts-text-muted);
+  overflow-wrap: anywhere;
+}
+
+.signOut {
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  font-family: inherit;
+  font-size: 0.875rem;
+  color: var(--ts-text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.signOut:hover:not(:disabled) {
+  background: var(--ts-border-subtle);
+}
+
+.signOut:disabled {
+  color: var(--ts-text-muted);
+  cursor: default;
+}
+
+.error {
+  margin: 0;
+  padding: 0 12px 10px;
+  font-size: 0.75rem;
+  color: #b3261e;
+}
+
+@media (max-width: 720px) {
+  /* The name is the first thing worth dropping when the header gets tight. */
+  .name {
+    display: none;
+  }
+  .placeholder {
+    width: 44px;
+  }
+}
+
+.signedOut {
+  display: flex;
+  align-items: center;
+  gap: var(--ts-space-3, 12px);
+}
+
+/* Secondary by design: most visitors are customers, and an employee knows to look. */
+.employeeLogin {
+  border: none;
+  background: transparent;
+  padding: 0;
+  font-size: 0.8125rem;
+  color: var(--ts-color-gray-900, #555);
+  text-decoration: underline;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.employeeLogin:hover {
+  color: var(--ts-color-brand-primary, #04365b);
+}

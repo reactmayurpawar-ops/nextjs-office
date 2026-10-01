@@ -1,0 +1,21 @@
+.banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ts-space-3);
+  padding: 10px 16px;
+  background: #fdecea;
+  border-bottom: 1px solid #f5c2bd;
+  color: #8c1d18;
+  font-size: 0.875rem;
+}
+
+.dismiss {
+  flex: none;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+}

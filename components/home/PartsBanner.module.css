@@ -1,0 +1,50 @@
+.banner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 280px;
+  padding: var(--ts-space-12) var(--ts-space-4);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 20, 28, 0.45);
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  max-width: 680px;
+  text-align: center;
+  color: #ffffff;
+}
+
+.title {
+  color: #ffffff;
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin-bottom: var(--ts-space-3);
+}
+
+.body {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: var(--ts-space-6);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+@media (max-width: 768px) {
+  .banner {
+    min-height: 240px;
+    padding: var(--ts-space-8) var(--ts-space-4);
+  }
+  .title {
+    font-size: 1.75rem;
+  }
+}

@@ -1,0 +1,63 @@
+.banner {
+  position: sticky;
+  top: 0;
+  /* Above the header: an associate must never be able to scroll this out of sight. */
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ts-space-3);
+  padding: 10px 16px;
+  /* Deliberately not the error red used by AuthErrorBanner — this is a state, not a fault. */
+  background: #4a2c00;
+  border-bottom: 2px solid #d98324;
+  color: #fff6e9;
+  font-size: 0.875rem;
+}
+
+.who {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--ts-space-2);
+}
+
+.target {
+  font-weight: 700;
+}
+
+.account {
+  opacity: 0.85;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: var(--ts-space-3);
+  flex: none;
+}
+
+.countdown {
+  font-variant-numeric: tabular-nums;
+  opacity: 0.85;
+}
+
+.end {
+  flex: none;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  background: transparent;
+  color: inherit;
+  padding: 4px 12px;
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+
+.end:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.end:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
