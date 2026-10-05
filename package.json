@@ -1,26 +1,58 @@
+
 {
-  "name": "nextjs-project",
+  "name": "frontend",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+    "dev": "node scripts/next-with-system-ca.mjs dev",
+    "dev:all": "concurrently -n next,types,test -c blue,magenta,green \"npm:dev\" \"npm:typecheck:watch\" \"npm:test:watch\"",
+    "build": "node scripts/next-with-system-ca.mjs build",
+    "start": "node scripts/next-with-system-ca.mjs start",
+    "typecheck": "tsc --noEmit",
+    "typecheck:watch": "tsc --noEmit --watch --incremental",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "e2e": "playwright test",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "npm run format:check && npm run lint && npm run typecheck",
+    "gen:api-types": "openapi-typescript ../contracts/openapi/headless.yaml -o lib/api-types.d.ts"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.101.0",
+    "ioredis": "^5.11.1",
     "next": "16.3.6",
-    "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
+    "@playwright/test": "^1.61.0",
+    "@tailwindcss/postcss": "^4.3.3",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^6.0.2",
+    "concurrently": "^10.0.5",
     "eslint": "^9",
-    "eslint-config-next": "16.3.6",
-    "tailwindcss": "^4",
-    "typescript": "^5"
+    "eslint-config-next": "16.2.9",
+    "eslint-config-prettier": "^10.1.8",
+    "ioredis-mock": "^8.13.1",
+    "jsdom": "^29.1.1",
+    "msw": "^2.14.6",
+    "openapi-typescript": "^7.13.0",
+    "prettier": "^3.8.4",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5.8.3",
+    "vitest": "^4.1.11"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }
