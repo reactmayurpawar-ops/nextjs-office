@@ -58,6 +58,7 @@ export function AuthMenu({ loginLabel }: { loginLabel: string }) {
           user. Nothing can tell the two apart before they authenticate, so it is a choice
           rather than a detection.
         */}
+        {/*
         <button
           type="button"
           className={styles.employeeLogin}
@@ -65,6 +66,7 @@ export function AuthMenu({ loginLabel }: { loginLabel: string }) {
         >
           Employee sign in
         </button>
+        */}
       </div>
     );
   }

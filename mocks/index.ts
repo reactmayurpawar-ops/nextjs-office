@@ -7,5 +7,12 @@ import { sfHandlers } from './handlers/sf';
 import { embHandlers } from './handlers/emb';
 import { embProductsHandlers } from './handlers/emb-products';
 import { pricingHandlers } from './handlers/pricing';
+import { authHandlers } from './handlers/auth';
 
-export const handlers = [...sfHandlers, ...embHandlers, ...embProductsHandlers, ...pricingHandlers];
+export const handlers = [
+  ...sfHandlers,
+  ...embHandlers,
+  ...embProductsHandlers,
+  ...pricingHandlers,
+  ...authHandlers,
+];

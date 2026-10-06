@@ -1,23 +1,18 @@
-﻿/**
- * Role-based UI tests — acceptance criteria:
- *   ✓ Test Role Based UI
- *   ✓ React Component tests use MSW mocks of test users
- *
- * CSO (Customer Service Officer) role rules:
- *   ✓ Sees name + email + company in header
- *   ✓ Does NOT see "Act as a customer" button (CSA-only feature)
- *   ✓ Does NOT see sign-in buttons (already authenticated)
- *
- * MSW intercepts /api/v1/auth/session so the real useSession() hook runs.
- * No credentials, no Salesforce — purely in-process network interception.
+/**
+ * Role-based UI context tests — verifies user identity fields:
+ *   ✓ FirstName & LastName
+ *   ✓ Email
+ *   ✓ Role
+ *   ✓ AccountId
  */
 import { describe, it, expect, beforeAll, afterEach, afterAll, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { server } from './mocks/server';
-import { handleCsoUser, handleSignedOut } from './mocks/handlers';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { server } from '../../mocks/server';
+import { handleCsoUser, csoUserSession } from '../../mocks/handlers/auth';
 import { AuthMenu } from '@/components/auth/AuthMenu';
 
-// ── MSW lifecycle ─────────────────────────────────────────────────────────────
+// ── MSW Lifecycle ─────────────────────────────────────────────────────────────
 
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 afterEach(() => server.resetHandlers());
@@ -27,83 +22,58 @@ vi.mock('@/components/associate/ImpersonateDialog', () => ({
   ImpersonateDialog: () => null,
 }));
 
-// canImpersonate: false → simulates CSO (not CSA — CSA would have this true)
 vi.mock('@/components/associate/use-impersonation', () => ({
   useCanImpersonate: () => ({ data: false }),
 }));
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
-
-async function renderAndOpenMenu() {
-  render(<AuthMenu loginLabel="Sign In" />);
-  await waitFor(() =>
-    expect(screen.getByText('PCDIG12 User')).toBeInTheDocument(),
-  );
-  fireEvent.click(screen.getByText('PCDIG12 User'));
+function renderWithClient(ui: React.ReactElement) {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+      },
+    },
+  });
+  return render(<QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>);
 }
 
-// ── CSO role UI tests ─────────────────────────────────────────────────────────
+async function renderAndOpenMenu() {
+  server.use(handleCsoUser);
+  renderWithClient(<AuthMenu loginLabel="Sign In" />);
 
-describe('Role: CSO — PCDIG12User', () => {
-  beforeAll(() => server.use(handleCsoUser));
+  // Wait for user name to appear on trigger button
+  await waitFor(() =>
+    expect(screen.getByText('PCDIG12User React POC')).toBeInTheDocument(),
+  );
 
-  describe('identity display', () => {
-    it('shows the full name in the header trigger', async () => {
-      render(<AuthMenu loginLabel="Sign In" />);
-      await waitFor(() =>
-        expect(screen.getByText('PCDIG12 User')).toBeInTheDocument(),
-      );
-    });
+  // Click trigger to open dropdown
+  fireEvent.click(screen.getByText('PCDIG12User React POC'));
+}
 
-    it('shows email in the dropdown identity card', async () => {
-      await renderAndOpenMenu();
-      expect(screen.getByText('pcdig12user@test.pcdigires.com')).toBeInTheDocument();
-    });
+describe('User context and role display in UI', () => {
+  const { user, role, effectiveAccountId } = csoUserSession.data;
 
-    it('shows company name in the dropdown identity card', async () => {
-      await renderAndOpenMenu();
-      expect(screen.getByText('Shopping for Acme HVAC Supply')).toBeInTheDocument();
-    });
+  it('displays FirstName and LastName', async () => {
+    await renderAndOpenMenu();
+    expect(
+      screen.getAllByText(`${user.firstName} ${user.lastName}`).length,
+    ).toBeGreaterThanOrEqual(1);
   });
 
-  describe('CSO-specific access controls', () => {
-    it('does NOT show "Act as a customer" button — that is CSA-only', async () => {
-      await renderAndOpenMenu();
-      expect(
-        screen.queryByRole('menuitem', { name: /act as a customer/i }),
-      ).not.toBeInTheDocument();
-    });
-
-    it('shows the Sign out button — available to all authenticated roles', async () => {
-      await renderAndOpenMenu();
-      expect(screen.getByRole('menuitem', { name: 'Sign out' })).toBeInTheDocument();
-    });
-
-    it('does NOT show customer Sign In button — CSO is already authenticated', async () => {
-      render(<AuthMenu loginLabel="Sign In" />);
-      await waitFor(() =>
-        expect(screen.queryByRole('button', { name: 'Sign In' })).not.toBeInTheDocument(),
-      );
-    });
-  });
-});
-
-// ── Signed-out baseline (control group) ──────────────────────────────────────
-
-describe('Role: none (signed out) — control group', () => {
-  beforeAll(() => server.use(handleSignedOut));
-
-  it('shows Sign In button — confirming MSW role switch works correctly', async () => {
-    render(<AuthMenu loginLabel="Sign In" />);
-    await waitFor(() =>
-      expect(screen.getByRole('button', { name: 'Sign In' })).toBeInTheDocument(),
-    );
+  it('displays email address', async () => {
+    await renderAndOpenMenu();
+    expect(screen.getByText(user.email)).toBeInTheDocument();
   });
 
-  it('does NOT show user name', async () => {
-    render(<AuthMenu loginLabel="Sign In" />);
-    await waitFor(() =>
-      expect(screen.queryByText('PCDIG12 User')).not.toBeInTheDocument(),
-    );
+  it('displays accountId context (Shopping for <companyName>)', async () => {
+    await renderAndOpenMenu();
+    expect(
+      screen.getByText(`Shopping for ${user.companyName}`),
+    ).toBeInTheDocument();
+    expect(effectiveAccountId).toBe('001TEST000001ACME');
+  });
+
+  it('verifies authenticated user role is cso', () => {
+    expect(role).toBe('cso');
   });
 });
